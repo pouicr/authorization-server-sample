@@ -9,11 +9,20 @@
 */
 package net.atos.xa.contest.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class BinRange {
 
+    @Id
     private Integer fromBin;
     private Integer toBin;
     private String status;
+
+    public BinRange(){
+
+    }
 
     public BinRange(Integer fromBin, Integer toBin, String status) {
         this.fromBin = fromBin;

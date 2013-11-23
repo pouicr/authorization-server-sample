@@ -7,7 +7,7 @@
 *
 *****************************************************
 */
-package net.atos.contest.test;
+package net.atos.contest.test.arquillian;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -15,7 +15,6 @@ import junit.framework.Assert;
 import net.atos.xa.contest.dto.AuthorizationRequest;
 import net.atos.xa.contest.dto.AuthorizationResponse;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.openejb.core.LocalInitialContextFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -26,7 +25,6 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.naming.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
@@ -41,10 +39,16 @@ public class ServerTest {
 
     public static String SERVICE_URL = "http://localhost:8080/contest";
 
+/*    @Deployment (testable = false)
+    public static Archive<?> buildArchive(){
+        return ShrinkWrap.create(MavenImporter.class)
+                .loadPomFromFile("pom.xml")
+                .importBuildOutput()
+                .as(WebArchive.class);
+    }*/
+
     @Deployment (testable = false)
     public static WebArchive buildArchive(){
-
-        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, LocalInitialContextFactory.class.getName());
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "contest.war")
                 .addPackages(true, "net.atos.xa.contest")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -52,10 +56,14 @@ public class ServerTest {
                 .addAsResource(new FileAsset(new File("src/test/resources/merchants.csv")), "merchants.csv")
                 .addAsResource(new FileAsset(new File("src/test/resources/bin-ranges.csv")), "bin-ranges.csv")
                 .addAsResource(new FileAsset(new File("src/test/resources/blacklist.csv")), "blacklist.csv")
+                .addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/persistence.xml")), "persistence.xml")
+                .addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/resources.xml")), "resources.xml")
                 .addAsWebInfResource(new FileAsset(new File("src/main/webapp/WEB-INF/openejb-jar.xml")), "openejb-jar.xml")
                 .addAsLibraries(Maven.resolver()
                         .loadPomFromFile("pom.xml")
                         .importRuntimeDependencies()
+                        .resolve()
+                        .withTransitivity()
                         .asFile());
 
         System.out.println(webArchive.toString(true));
@@ -65,7 +73,6 @@ public class ServerTest {
     @Test
     public void ping(){
         WebClient client = WebClient.create(SERVICE_URL+"/rest/ping", Arrays.asList(new JacksonJsonProvider()));
-        //WebClient client = WebClient.create(SERVICE_URL+"/rest/ping");
         client.type(MediaType.TEXT_PLAIN).accept(MediaType.TEXT_PLAIN);
         Response r = client.get();
         String ret = r.readEntity(String.class);
@@ -77,7 +84,6 @@ public class ServerTest {
     @Test
     public void rest(){
         WebClient client = WebClient.create(SERVICE_URL+"/rest/reset", Arrays.asList(new JacksonJsonProvider()));
-        //WebClient client = WebClient.create(SERVICE_URL+"/rest/ping");
         client.type(MediaType.TEXT_PLAIN).accept(MediaType.TEXT_PLAIN);
         Response r = client.get();
         String ret = r.readEntity(String.class);
@@ -96,11 +102,9 @@ public class ServerTest {
         while ((sCurrentLine = br.readLine()) != null) {
             String[] data = sCurrentLine.split(",");
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(data[0],data[1],Integer.valueOf(data[2]),Integer.valueOf(data[3]), new StdDateFormat().parse(data[4]),data[5]);
-            System.out.println("Client side request = "+authorizationRequest);
             Response r = client.post(authorizationRequest);
             Assert.assertEquals(Response.Status.OK.getReasonPhrase(),r.getStatusInfo().getReasonPhrase());
             AuthorizationResponse authorizationResponse = r.readEntity(AuthorizationResponse.class);
-            System.out.println("Client side response = " + authorizationResponse);
             Assert.assertEquals(data[6], authorizationResponse.getResponseCode());
         }
     }

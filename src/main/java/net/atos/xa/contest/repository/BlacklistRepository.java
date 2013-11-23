@@ -29,7 +29,7 @@ public class BlacklistRepository {
     }
 
     public void addToBlackList(String cardNumber, String expiryDate) {
-        Card aCard = cardRepository.read(cardNumber,expiryDate);
+        Card aCard = cardRepository.findByCardNumberAndExpiryDate(cardNumber,expiryDate);
         this.blackList.add(aCard);
     }
 
@@ -38,7 +38,7 @@ public class BlacklistRepository {
     }
 
     public boolean isBlackListed(String cardNumber, String expiryDate) {
-        Card aCard = cardRepository.read(cardNumber,expiryDate);
+        Card aCard = cardRepository.findByCardNumberAndExpiryDate(cardNumber,expiryDate);
         return this.blackList.contains(aCard);
     }
 

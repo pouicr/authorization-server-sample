@@ -60,9 +60,9 @@ public class LoadTest {
     public void loadTest(){
         System.out.println("should be done :)");
 
-        Assert.assertNotNull(cardRepository.getCards());
-        Assert.assertNotNull(merchantRepository.getMerchants());
-        Assert.assertNotNull(binRangeRepository.getBinRanges());
+        Assert.assertNotNull(cardRepository.findAll());
+        Assert.assertNotNull(merchantRepository.findAll());
+        Assert.assertNotNull(binRangeRepository.findAll());
         Assert.assertNotNull(blacklist.getBlackList());
     }
 

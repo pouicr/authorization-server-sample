@@ -10,42 +10,26 @@
 package net.atos.xa.contest.repository;
 
 import net.atos.xa.contest.domain.BinRange;
+import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.QueryResult;
+import org.apache.deltaspike.data.api.Repository;
 
-import javax.enterprise.context.ApplicationScoped;
-import java.util.ArrayList;
-import java.util.List;
+@Repository
+public abstract class BinRangeRepository extends AbstractEntityRepository<BinRange, String> {
 
-@ApplicationScoped
-public class BinRangeRepository {
 
-    private List<BinRange> binRanges = new ArrayList<BinRange>();
-
-    public void put(BinRange binRange){
-        this.binRanges.add(binRange);
-    }
-
-    public List<BinRange> getBinRanges() {
-        return binRanges;
-    }
-
-    public void setBinRanges(List<BinRange> binRanges) {
-        this.binRanges = binRanges;
-    }
-
-    public BinRange findBinRange(Integer bin){
-        for (BinRange binRange : binRanges) {
-            if(binRange.getFromBin() <= bin && bin <= binRange.getToBin()){
-                return binRange;
-            }
-        }
-        return null;
-    }
+    @Query(value = "SELECT br FROM BinRange br WHERE br.fromBin <= ?1 and br.toBin >= ?1")
+    public abstract QueryResult<BinRange> findBinRange(Integer bin);
 
     public boolean isActive(Integer bin){
-        BinRange binRange = findBinRange(bin);
-        if(null == binRange){
+        QueryResult<BinRange> queryResult = findBinRange(bin);
+        if (queryResult.count() == 0){
             return false;
+        }else{
+            BinRange br = queryResult.getSingleResult();
+            return "ACTIVE".equals(br.getStatus());
         }
-        return "ACTIVE".equals(binRange.getStatus());
     }
+
 }

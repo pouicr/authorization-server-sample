@@ -9,10 +9,19 @@
 */
 package net.atos.xa.contest.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Merchant {
 
+    @Id
     private Integer merchantId;
+
     private String countryCode;
+
+    public Merchant() {
+    }
 
     public Merchant(Integer merchantId, String countryCode) {
         this.merchantId = merchantId;

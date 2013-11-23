@@ -43,9 +43,7 @@ public class AuthorizationService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public AuthorizationResponse authorized(AuthorizationRequest authorizationRequest){
-        System.out.println("Server side request = "+authorizationRequest);
         AuthorizationResponse authorizationResponse = authorizationManager.authorized(authorizationRequest);
-        System.out.println("Server side response = "+authorizationResponse);
         return authorizationResponse;
     }
 

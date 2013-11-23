@@ -101,7 +101,12 @@ public class AuthorizationManager {
 
     public String cardControl(AuthorizationRequest authorizationRequest) {
 
-        Card card = cardRepository.read(authorizationRequest.getCardNumber(), authorizationRequest.getExpiryDate());
+        Card card;
+        try{
+            card = cardRepository.findByCardNumberAndExpiryDate(authorizationRequest.getCardNumber(), authorizationRequest.getExpiryDate());
+        }catch (Exception nre){
+            card = null;
+        }
         if (blacklistRepository.isBlackListed(card)) {
             return BLACKLIST_ERROR;
         }
@@ -128,7 +133,7 @@ public class AuthorizationManager {
 
 
     private String merchantControl(AuthorizationRequest authorizationRequest) {
-        return merchantRepository.read(authorizationRequest.getMerchantId()) != null ? ALL_CHECK_VALID : MERCHANT_ERROR;
+        return merchantRepository.findBy(authorizationRequest.getMerchantId()) != null ? ALL_CHECK_VALID : MERCHANT_ERROR;
     }
 
     public String checkDuplicate(AuthorizationRequest authorizationRequest) {
@@ -153,7 +158,7 @@ public class AuthorizationManager {
     public String fraudControl(AuthorizationRequest authorizationRequest) {
         List<AuthorizationRequest> find = authorizationRepository.readByCard(authorizationRequest.getCardNumber(), authorizationRequest.getExpiryDate());
         if (!find.isEmpty()) {
-            Merchant requestMerchant = merchantRepository.read(authorizationRequest.getMerchantId());
+            Merchant requestMerchant = merchantRepository.findBy(authorizationRequest.getMerchantId());
             // for each authorization on this card
             for (AuthorizationRequest currentAuthorization : find) {
                 Calendar c = new GregorianCalendar();
@@ -162,7 +167,7 @@ public class AuthorizationManager {
                 Date from = c.getTime();
                 //if current author date time is after request author date time - 5 and before request author date time
                 if (currentAuthorization.getRequestDatetime().before(authorizationRequest.getRequestDatetime()) && currentAuthorization.getRequestDatetime().after(from)) {
-                    Merchant currentMerchant = merchantRepository.read(currentAuthorization.getMerchantId());
+                    Merchant currentMerchant = merchantRepository.findBy(currentAuthorization.getMerchantId());
                     // and if merchant.country is different
                     if (!currentMerchant.getCountryCode().equals(requestMerchant.getCountryCode())) {
                         return FRAUD_ERROR;

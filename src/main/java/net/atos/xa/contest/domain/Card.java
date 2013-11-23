@@ -9,8 +9,13 @@
 */
 package net.atos.xa.contest.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Card {
 
+    @Id
     private String cardNumber;
     private String expiryDate;
     private Integer balance;
@@ -20,6 +25,10 @@ public class Card {
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
         this.balance = balance;
+    }
+
+    public Card() {
+        // no-op
     }
 
     public Integer getBalance() {
@@ -46,5 +55,32 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Card card = (Card) o;
+
+        if (!cardNumber.equals(card.cardNumber)) return false;
+        if (!expiryDate.equals(card.expiryDate)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cardNumber.hashCode();
+        result = 31 * result + expiryDate.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "cardNumber='" + cardNumber + '\'' +
+                ", expiryDate='" + expiryDate + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }
