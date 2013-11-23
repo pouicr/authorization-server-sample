@@ -1,7 +1,0 @@
-127.0.0.1 - - [23/Nov/2013:22:21:23 +0100] "GET /contest/login.xhtml HTTP/1.1" 200 5769
-127.0.0.1 - - [23/Nov/2013:22:21:24 +0100] "GET /contest/login.xhtml?dsRid=789&windowId=127 HTTP/1.1" 200 3741
-127.0.0.1 - - [23/Nov/2013:22:21:29 +0100] "GET /contest/login.xhtml HTTP/1.1" 200 5769
-127.0.0.1 - - [23/Nov/2013:22:21:29 +0100] "GET /contest/login.xhtml?dsRid=770&windowId=127 HTTP/1.1" 200 3741
-127.0.0.1 - - [23/Nov/2013:22:21:42 +0100] "POST /contest/login.xhtml HTTP/1.1" 302 -
-127.0.0.1 - - [23/Nov/2013:22:21:42 +0100] "GET /contest/index.xhtml HTTP/1.1" 200 5769
-127.0.0.1 - - [23/Nov/2013:22:21:43 +0100] "GET /contest/index.xhtml?dsRid=861&windowId=127 HTTP/1.1" 200 6589

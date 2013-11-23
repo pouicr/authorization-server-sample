@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
-  <Resource id="db/autor" type="javax.sql.DataSource">
-    UserName = sa
-    Password =
-    JdbcUrl = jdbc:hsqldb:mem:hsqldb
-    JdbcDriver = org.hsqldb.jdbcDriver
-  </Resource>
-</resources>
