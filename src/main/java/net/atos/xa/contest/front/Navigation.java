@@ -11,6 +11,9 @@ public interface Navigation extends ViewConfig{
     @View
     class Index implements Navigation {}
 
+    @View
+    class Login implements Navigation {}
+
     @View(basePath = "/cards/")
     interface CardsNavigation extends Navigation {}
 }

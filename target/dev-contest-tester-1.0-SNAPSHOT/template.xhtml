@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Authorization backend</title>
+    <meta name="description" content="A JavaEE sample"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <h3 class="muted">Authorization backend</h3>
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li>
+                            <h:link outcome="#{menu.homePage}" value="Home"/>
+                        </li>
+                        <li>
+                            <h:form id="log-form">
+                                <h:commandLink styleClass="menu-text" action="#{menu.getHomePage}"
+                                               actionListener="#{user.logout}" rendered="#{user.logged}"
+                                               value="Logout"/>
+                            </h:form>
+                        </li>
+                        <li>
+                            <h:link outcome="#{menu.loginPage}" value="Login" rendered="#{!user.logged}"/>
+                        </li>
+                        <li>
+                            <h:outputText styleClass="menu-text" value="Welcome #{user.name}."/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ui:insert name="content" />
+        <hr />
+
+        <div class="footer">
+            <p>AuthorBack</p>
+        </div>
+    </div>
+</h:body>
+</html>
