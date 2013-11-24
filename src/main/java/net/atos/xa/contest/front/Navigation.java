@@ -14,6 +14,9 @@ public interface Navigation extends ViewConfig{
     @View
     class Login implements Navigation {}
 
-    @View(basePath = "/cards/")
-    interface CardsNavigation extends Navigation {}
+    @View(basePath = "/site/")
+    interface BackendNavigation extends Navigation {}
+
+    @View
+    class BinRange implements BackendNavigation {}
 }

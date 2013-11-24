@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Authorization backend</title>
+    <meta name="description" content="A JavaEE sample"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <h:form>
+            <p:growl id="messages"/>
+
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <h:outputText styleClass="menu-text" value="Welcome #{user.name}" rendered="#{user.logged}"/>
+
+                    <p:button type="button" outcome="#{menu.homePage}" value="Home"/>
+
+                    <p:button type="button" outcome="#{menu.binRangeAdmin}" value="BinRange" rendered="#{user.logged}"/>
+                </p:toolbarGroup>
+
+                <p:toolbarGroup align="right">
+                    <p:button type="button" value="Login" outcome="#{menu.loginPage}" rendered="#{!user.logged}"/>
+
+                    <h:commandLink styleClass="menu-text" action="#{menu.getHomePage}"
+                                   actionListener="#{user.logout}" rendered="#{user.logged}"
+                                   value="Logout"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </h:form>
+        <ui:insert name="content"/>
+        <hr/>
+
+        <div class="footer">
+            <p>AuthorBack</p>
+        </div>
+    </div>
+</h:body>
+</html>

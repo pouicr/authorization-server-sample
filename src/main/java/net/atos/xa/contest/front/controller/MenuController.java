@@ -24,4 +24,9 @@ public class MenuController implements Serializable {
     public Class<? extends Navigation> getLoginPage(){
         return Navigation.Login.class;
     }
+
+    public Class<? extends Navigation> getBinRangeAdmin(){
+        return Navigation.BinRange.class;
+    }
+
 }

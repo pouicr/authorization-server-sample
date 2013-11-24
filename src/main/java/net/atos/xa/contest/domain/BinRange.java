@@ -30,6 +30,16 @@ public class BinRange {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "BinRange{" +
+                "fromBin=" + fromBin +
+                ", toBin=" + toBin +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+
     public Integer getFromBin() {
         return fromBin;
     }

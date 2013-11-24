@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head/>
+<ui:composition template="/site/template.xhtml">
+    <ui:define name="content">
+        <div>
+            <h1>BinRange administration page</h1>
+        </div>
+        <hr/>
+        <p:panelGrid style="margin-top:20px">
+            <f:facet name="header">
+                <p:row>
+                    <p:column>From</p:column>
+                    <p:column>To</p:column>
+                    <p:column>Status</p:column>
+                </p:row>
+            </f:facet>
+            <ui:repeat value="#{binRange.allBinRange}" var="bin">
+                <p:row>
+                    <p:column><h:outputText value="#{bin.fromBin}"/></p:column>
+                    <p:column><h:outputText value="#{bin.ToBin}"/></p:column>
+                    <p:column><h:outputText value="#{bin.status}"/></p:column>
+                </p:row>
+            </ui:repeat>
+        </p:panelGrid>
+
+
+
+        <h:form id="bin-form" styleClass="form-signin">
+            <p:panel header="Enter your credentials">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="from" value="From:"/>
+                    <p:inputText id="from" value="#{binRange.from}" required="true" minlength="6" maxlength="6" >
+                        <f:convertNumber integerOnly="true"/>
+                    </p:inputText>
+
+                    <h:outputLabel for="to" value="To:"/>
+                    <p:inputText id="to" value="#{binRange.to}" required="true" minlength="6" maxlength="6" >
+                        <f:convertNumber integerOnly="true"/>
+                    </p:inputText>
+                </h:panelGrid>
+            </p:panel>
+            <h:commandButton styleClass="btn btn-large btn-primary" value="Login" action="#{binRange.addBin}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
