@@ -7,7 +7,7 @@
 *
 *****************************************************
 */
-package net.atos.contest.test;
+package net.atos.contest.test.junit;
 
 import org.junit.Test;
 

@@ -7,12 +7,13 @@
 *
 *****************************************************
 */
-package net.atos.contest.test;
+package net.atos.contest.test.embedded;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import junit.framework.Assert;
 import net.atos.xa.contest.business.AuthorizationManager;
 import net.atos.xa.contest.dto.AuthorizationRequest;
+import net.atos.xa.contest.dto.AuthorizationResponse;
 import org.apache.openejb.core.LocalInitialContextFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,11 +25,13 @@ import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CryptoTest {
+public class LocalAuthorizationTest {
 
     @Inject
     AuthorizationManager authorizationManager;
@@ -50,35 +53,28 @@ public class CryptoTest {
         container.getContext().bind("inject", this);
     }
 
+
     @Test
-    public void cryptoTest() throws IOException, ParseException {
+    public void authorizedFromFile() throws IOException, ParseException {
         String sCurrentLine;
-        BufferedReader br = new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("authorizationTest.csv")));
-        System.out.println("###############");
+        BufferedReader br = new BufferedReader(new FileReader(Thread.currentThread().getContextClassLoader().getResource("authorizationTest.csv").getFile()));
+        List<Integer> previousAN = new ArrayList<Integer>();
         while ((sCurrentLine = br.readLine()) != null) {
             String[] data = sCurrentLine.split(",");
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(data[0],data[1],Integer.valueOf(data[2]),Integer.valueOf(data[3]), new StdDateFormat().parse(data[4]),data[5]);
-            StringBuilder sb = new StringBuilder();
-            sb.append(authorizationRequest.getCardNumber());
-            sb.append(authorizationRequest.getExpiryDate());
-            sb.append(authorizationRequest.getAmount());
-            sb.append(authorizationRequest.getMerchantId());
-
-            StringBuilder sb0 = new StringBuilder();
-            sb0.append(data[0]);
-            sb0.append(data[1]);
-            sb0.append(data[2]);
-            sb0.append(data[3]);
-
-            String cryptogram = authorizationManager.crypt(sb.toString());
-            String cryptogram0 = authorizationManager.crypt(sb0.toString());
-
-            Assert.assertEquals(cryptogram,cryptogram0);
-
-            System.out.println("Author n°"+data[7]+" = "+sb.toString()+" => "+ cryptogram);
-            System.out.println("###############");
+            System.out.println("Bean side request = "+authorizationRequest);
+            AuthorizationResponse authorizationResponse = authorizationManager.authorized(authorizationRequest);
+            System.out.println("Bean side response = " + authorizationResponse);
+            Assert.assertEquals("unexpected responseCode : ",data[6],authorizationResponse.getResponseCode());
+            Assert.assertFalse("AuthorizationNumber should be different : ",previousAN.contains(authorizationResponse.getAuthorizationNumber()));
+            if( authorizationResponse.getResponseCode().equals("000")){
+                previousAN.add(authorizationResponse.getAuthorizationNumber());
+            } else {
+                Assert.assertEquals("When responseCode != 000 (error occured), authorizationNumber should be '0'",new Integer(0),authorizationResponse.getAuthorizationNumber());
+            }
         }
     }
+
 
 
 

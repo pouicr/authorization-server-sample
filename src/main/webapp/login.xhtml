@@ -8,8 +8,8 @@
 <h:head/>
 <ui:composition template="/site/template.xhtml">
     <ui:define name="content">
-        <div class="container">
-            <h:form id="login-form" styleClass="form-signin">
+        <div>
+            <h:form id="login-form">
                 <p:panel header="Enter your credentials">
                     <h:panelGrid columns="2">
                         <h:outputLabel for="login" value="Login:"/>
@@ -19,7 +19,7 @@
                         <p:password id="password" value="#{user.password}" required="true"/>
                     </h:panelGrid>
                 </p:panel>
-                <h:commandButton styleClass="btn btn-large btn-primary" value="Login" action="#{user.login}"/>
+                <h:commandButton value="Login" action="#{user.login}"/>
             </h:form>
         </div>
 

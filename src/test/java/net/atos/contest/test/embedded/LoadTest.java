@@ -7,7 +7,7 @@
 *
 *****************************************************
 */
-package net.atos.contest.test;
+package net.atos.contest.test.embedded;
 
 import junit.framework.Assert;
 import net.atos.xa.contest.repository.BinRangeRepository;

@@ -196,11 +196,11 @@
                     <tomeeVersion>${tomee.version}</tomeeVersion>
                     <tomeeClassifier>plus</tomeeClassifier>
                     <simpleLog>true</simpleLog>
-<!--                    <synchronization>
+                    <synchronization>
                         <extensions>
                             <extension>.xhtml</extension>
                         </extensions>
-                    </synchronization>-->
+                    </synchronization>
                     <reloadOnUpdate>true</reloadOnUpdate>
                     <systemVariables>
                         <cards>${project.basedir}/src/test/resources/cards.csv</cards>

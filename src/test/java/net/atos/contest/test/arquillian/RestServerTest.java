@@ -17,37 +17,35 @@ import net.atos.xa.contest.dto.AuthorizationResponse;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.archive.importer.MavenImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 
 @RunWith(Arquillian.class)
-public class ServerTest {
+public class RestServerTest {
 
     public static String SERVICE_URL = "http://localhost:8080/contest";
 
-/*    @Deployment (testable = false)
+    @Deployment (testable = false)
     public static Archive<?> buildArchive(){
         return ShrinkWrap.create(MavenImporter.class)
                 .loadPomFromFile("pom.xml")
                 .importBuildOutput()
                 .as(WebArchive.class);
-    }*/
+    }
 
-    @Deployment (testable = false)
+    /*@Deployment (testable = false)
     public static WebArchive buildArchive(){
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "contest.war")
                 .addPackages(true, "net.atos.xa.contest")
@@ -68,7 +66,7 @@ public class ServerTest {
 
         System.out.println(webArchive.toString(true));
         return webArchive;
-    }
+    }*/
 
     @Test
     public void ping(){

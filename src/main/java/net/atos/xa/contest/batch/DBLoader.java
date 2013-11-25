@@ -44,23 +44,31 @@ public class DBLoader {
 
 
     @PostConstruct
-    private void loadAll(){
+    private void loadAll() {
         try {
-            loadCards(Thread.currentThread().getContextClassLoader().getResourceAsStream("cards.csv"));
-            loadMerchants(Thread.currentThread().getContextClassLoader().getResourceAsStream("merchants.csv"));
-            loadBinRange(Thread.currentThread().getContextClassLoader().getResourceAsStream("bin-ranges.csv"));
-            loadBlacklist(Thread.currentThread().getContextClassLoader().getResourceAsStream("blacklist.csv"));
+            if (isEmpty()) {
+                loadCards(Thread.currentThread().getContextClassLoader().getResourceAsStream("cards.csv"));
+                loadMerchants(Thread.currentThread().getContextClassLoader().getResourceAsStream("merchants.csv"));
+                loadBinRange(Thread.currentThread().getContextClassLoader().getResourceAsStream("bin-ranges.csv"));
+                loadBlacklist(Thread.currentThread().getContextClassLoader().getResourceAsStream("blacklist.csv"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private boolean isEmpty() {
+        if (cardRepository.findAll().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 
     private void loadCards(InputStream fileName) throws IOException {
         CSVReader reader = new CSVReader(new InputStreamReader(fileName));
         String[] nextLine;
         while ((nextLine = reader.readNext()) != null) {
-            Card card = new Card(nextLine[0],nextLine[1],Integer.valueOf(nextLine[2]));
+            Card card = new Card(nextLine[0], nextLine[1], Integer.valueOf(nextLine[2]));
             cardRepository.save(card);
         }
         reader.close();
@@ -70,7 +78,7 @@ public class DBLoader {
         CSVReader reader = new CSVReader(new InputStreamReader(fileName));
         String[] nextLine;
         while ((nextLine = reader.readNext()) != null) {
-            Merchant merchant= new Merchant(Integer.valueOf(nextLine[0]),nextLine[1]);
+            Merchant merchant = new Merchant(Integer.valueOf(nextLine[0]), nextLine[1]);
             merchantRepository.save(merchant);
         }
         reader.close();
@@ -80,7 +88,7 @@ public class DBLoader {
         CSVReader reader = new CSVReader(new InputStreamReader(fileName));
         String[] nextLine;
         while ((nextLine = reader.readNext()) != null) {
-            BinRange binRange = new BinRange(Integer.valueOf(nextLine[0]),Integer.valueOf(nextLine[1]),nextLine[2]);
+            BinRange binRange = new BinRange(Integer.valueOf(nextLine[0]), Integer.valueOf(nextLine[1]), nextLine[2]);
             binRangeRepository.save(binRange);
         }
         reader.close();
@@ -90,7 +98,7 @@ public class DBLoader {
         CSVReader reader = new CSVReader(new InputStreamReader(arg));
         String[] nextLine;
         while ((nextLine = reader.readNext()) != null) {
-            blacklist.addToBlackList(nextLine[0],nextLine[1]);
+            blacklist.addToBlackList(nextLine[0], nextLine[1]);
         }
         reader.close();
     }

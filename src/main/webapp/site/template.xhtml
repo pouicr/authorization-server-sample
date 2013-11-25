@@ -10,13 +10,13 @@
     <meta name="description" content="A JavaEE sample"/>
 </h:head>
 <h:body>
-    <div class="container">
+    <div>
         <h:form>
             <p:growl id="messages"/>
 
             <p:toolbar>
                 <p:toolbarGroup align="left">
-                    <h:outputText styleClass="menu-text" value="Welcome #{user.name}" rendered="#{user.logged}"/>
+                    <h:outputText value="Welcome #{user.name}" rendered="#{user.logged}"/>
 
                     <p:button type="button" outcome="#{menu.homePage}" value="Home"/>
 
@@ -26,7 +26,7 @@
                 <p:toolbarGroup align="right">
                     <p:button type="button" value="Login" outcome="#{menu.loginPage}" rendered="#{!user.logged}"/>
 
-                    <h:commandLink styleClass="menu-text" action="#{menu.getHomePage}"
+                    <h:commandLink action="#{menu.getHomePage}"
                                    actionListener="#{user.logout}" rendered="#{user.logged}"
                                    value="Logout"/>
                 </p:toolbarGroup>
@@ -35,7 +35,7 @@
         <ui:insert name="content"/>
         <hr/>
 
-        <div class="footer">
+        <div>
             <p>AuthorBack</p>
         </div>
     </div>
