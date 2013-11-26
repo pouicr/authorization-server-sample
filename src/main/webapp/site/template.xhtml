@@ -16,7 +16,7 @@
 
             <p:toolbar>
                 <p:toolbarGroup align="left">
-                    <h:outputText value="Welcome #{user.name}" rendered="#{user.logged}"/>
+                    <h:outputText id="user-id" value="Welcome #{user.name}" rendered="#{user.logged}"/>
 
                     <p:button type="button" outcome="#{menu.homePage}" value="Home"/>
 

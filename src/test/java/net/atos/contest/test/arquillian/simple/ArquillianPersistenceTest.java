@@ -1,4 +1,4 @@
-package net.atos.contest.test.arquillian;
+package net.atos.contest.test.arquillian.simple;
 
 
 import net.atos.xa.contest.domain.Card;

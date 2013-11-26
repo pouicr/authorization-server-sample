@@ -4,7 +4,7 @@ import net.atos.xa.contest.dto.front.User;
 import net.atos.xa.contest.front.Navigation;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -19,19 +19,26 @@ import java.io.Serializable;
 @SessionScoped
 public class UserController implements Serializable {
 
-    private User user = new User();
+    @Inject
+    private User user;
+
     private String identification;
     private String password;
 
     public Class<? extends Navigation> login() {
+        if(identification.equalsIgnoreCase("BAD")){
+            return Navigation.Index.class;
+        }
         user.setName(getIdentification());
         user.setLogged(true);
+        System.out.println("================ LOGIN !!! ===============");
         return Navigation.Index.class;
     }
 
     public Class<? extends Navigation> logout() {
         user.setName("Anonymous");
         user.setLogged(false);
+        System.out.println("================ LOGOUT !!! ===============");
         return Navigation.Index.class;
     }
 

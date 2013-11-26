@@ -7,26 +7,28 @@
 *
 *****************************************************
 */
-package net.atos.contest.test.arquillian;
+package net.atos.contest.test.arquillian.simple;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import junit.framework.Assert;
 import net.atos.xa.contest.dto.AuthorizationRequest;
 import net.atos.xa.contest.dto.AuthorizationResponse;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.archive.importer.MavenImporter;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -37,15 +39,8 @@ public class RestServerTest {
 
     public static String SERVICE_URL = "http://localhost:8080/contest";
 
-    @Deployment (testable = false)
-    public static Archive<?> buildArchive(){
-        return ShrinkWrap.create(MavenImporter.class)
-                .loadPomFromFile("pom.xml")
-                .importBuildOutput()
-                .as(WebArchive.class);
-    }
 
-    /*@Deployment (testable = false)
+    @Deployment (testable = false)
     public static WebArchive buildArchive(){
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "contest.war")
                 .addPackages(true, "net.atos.xa.contest")
@@ -66,7 +61,7 @@ public class RestServerTest {
 
         System.out.println(webArchive.toString(true));
         return webArchive;
-    }*/
+    }
 
     @Test
     public void ping(){
@@ -75,7 +70,7 @@ public class RestServerTest {
         Response r = client.get();
         String ret = r.readEntity(String.class);
         r.close();
-        Assert.assertEquals(Response.Status.OK.getReasonPhrase(),r.getStatusInfo().getReasonPhrase());
+        Assert.assertEquals(Response.Status.OK.getReasonPhrase(), r.getStatusInfo().getReasonPhrase());
         Assert.assertEquals("pong",ret);
     }
 

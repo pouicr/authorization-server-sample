@@ -30,4 +30,8 @@
     <extension qualifier="persistence-dbunit">
         <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
     </extension>
+
+    <extension qualifier="webdriver">
+        <property name="browser">htmlUnit</property>
+    </extension>
 </arquillian>

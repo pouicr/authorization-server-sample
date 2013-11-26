@@ -1,5 +1,8 @@
 package net.atos.xa.contest.dto.front;
 
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: pouic
@@ -7,14 +10,12 @@ package net.atos.xa.contest.dto.front;
  * Time: 20:14
  * To change this template use File | Settings | File Templates.
  */
-public class User {
+@SessionScoped
+public class User implements Serializable {
 
-    private String name="Unknown";
+    private String name="UNKNOWN";
 
     private boolean logged = false;
-
-    public User() {
-    }
 
     public void logout(){
         logged = false;
