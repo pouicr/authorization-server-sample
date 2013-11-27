@@ -29,10 +29,7 @@ import java.net.URL;
  */
 @RunWith(ArquillianCucumber.class)
 @Features("src/test/resources/features/front-range-test.feature")
-public class CukeRangeCreationTest {
-
-    public static String SERVICE_URL = "http://localhost:8080/contest";
-
+public class CukeRangeCreationTe_st {
 
     @Deployment (testable = false)
     public static Archive<?> buildArchive() {
@@ -49,18 +46,18 @@ public class CukeRangeCreationTest {
     }
 
     @Drone
-    WebDriver browser;
+    private WebDriver browser;
 
     @ArquillianResource
-    URL deploymentUrl;
+    private URL deploymentUrl;
 
-    String userName;
+    private String userName;
 
     @FindBy(id = "login-form:login")
-    WebElement login;
+    private WebElement login;
 
     @FindBy(id = "login-form:password")
-    WebElement password;
+    private WebElement password;
 
     @FindBy(id = "login-form:submit-login")
     private WebElement loginButton;
